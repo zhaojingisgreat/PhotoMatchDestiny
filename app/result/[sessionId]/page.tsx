@@ -12,7 +12,7 @@ import { ArrowLeft, Download, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ShareButton } from '@/components/share-button';
-import { Analytics } from '@/components/analytics';
+import { GoogleAnalytics, Analytics } from '@/components/analytics';
 
 export default function ResultPage() {
   const searchParams = useSearchParams();
@@ -88,7 +88,7 @@ export default function ResultPage() {
 
   return (
     <>
-      <Analytics />
+      <GoogleAnalytics />
       {/* Clean White Background */}
       <div className="min-h-screen bg-white">
         {/* Top Navigation Bar - Clean & Modern */}
