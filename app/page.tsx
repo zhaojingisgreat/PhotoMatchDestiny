@@ -71,78 +71,200 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section with Background Image */}
-      <div className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+      {/* Hero Section - Romantic Landing Page */}
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/hero-background.png"
-            alt="Couple at sunset"
+            alt="Romantic couple at sunset"
             fill
             className="object-cover"
             priority
           />
-          {/* Gradient Overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-white/95"></div>
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-pink-900/10 via-transparent to-white/40"></div>
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 container mx-auto max-w-5xl px-4 py-16 text-center">
-          <div className="mb-8 space-y-4">
-            <p className="text-sm sm:text-base text-pink-600 font-medium tracking-wide animate-pulse">
-              ❤️ WHERE PHOTOS MEET DESTINY ❤️
-            </p>
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-foreground tracking-tight">
-                Photo<span className="text-primary">Match</span>Destiny
+        {/* Floating Hearts Animation */}
+        <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute animate-float-heart"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${i * 0.8}s`,
+                opacity: 0.15,
+              }}
+            >
+              <Heart
+                className="text-pink-300"
+                fill="currentColor"
+                size={Math.random() * 30 + 20}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 container mx-auto max-w-6xl px-6 py-20">
+          <div className="max-w-3xl space-y-8">
+            {/* Top Tagline */}
+            <div className="text-center">
+              <p className="text-pink-500 font-medium tracking-[0.3em] text-sm animate-pulse inline-flex items-center gap-2">
+                <Heart className="inline w-4 h-4" fill="currentColor" />
+                WHERE PHOTOS MEET DESTINY
+                <Heart className="inline w-4 h-4" fill="currentColor" />
+              </p>
+            </div>
+
+            {/* Main Logo with Heart */}
+            <div className="text-center relative">
+              {/* Decorative Heart SVG */}
+              <svg
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-32 -z-10 opacity-20"
+                viewBox="0 0 800 200"
+              >
+                <path
+                  d="M400,50 C400,20 420,10 440,10 C470,10 480,30 480,50 C480,90 400,140 400,140 C400,140 320,90 320,50 C320,30 330,10 360,10 C380,10 400,20 400,50 Z"
+                  fill="none"
+                  stroke="#ec4899"
+                  strokeWidth="3"
+                  className="animate-pulse"
+                />
+              </svg>
+
+              <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight leading-tight">
+                <span className="text-gray-900">Photo</span>
+                <span className="text-pink-500 relative">
+                  Match
+                  <Heart
+                    className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 text-pink-400 animate-pulse"
+                    fill="currentColor"
+                  />
+                </span>
+                <span className="text-gray-900">Destiny</span>
               </h1>
-            </div>
-            <p className="text-xl sm:text-2xl text-foreground/80 font-medium max-w-2xl mx-auto">
-              One photo. A million possibilities.
-            </p>
-            <p className="text-lg sm:text-xl text-primary font-medium">
-              Find your destiny.
-            </p>
-          </div>
 
-          {/* CTA Icons */}
-          <div className="flex items-center justify-center gap-12 mt-12 mb-8 text-white/90">
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
-                <ImageIconLucide className="h-7 w-7" />
-              </div>
-              <span className="text-sm font-medium">Upload Photo</span>
+              {/* Decorative underline */}
+              <svg className="mx-auto mt-4 w-64 h-8" viewBox="0 0 200 20">
+                <path
+                  d="M10,10 Q100,15 190,10"
+                  fill="none"
+                  stroke="#ec4899"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <circle cx="100" cy="12" r="3" fill="#ec4899">
+                  <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
+                </circle>
+              </svg>
             </div>
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
-                <Sparkles className="h-7 w-7" />
+
+            {/* Taglines */}
+            <div className="text-center space-y-3">
+              <p className="text-2xl md:text-3xl font-medium text-gray-800">
+                One photo. A million possibilities.
+              </p>
+              <div className="relative inline-block">
+                <p className="text-xl md:text-2xl text-pink-500 font-medium">
+                  Find your destiny.
+                </p>
+                {/* Heart curve decoration */}
+                <svg className="absolute -right-16 top-0 w-16 h-16" viewBox="0 0 50 50">
+                  <path
+                    d="M10,25 Q25,15 40,25"
+                    fill="none"
+                    stroke="#ec4899"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M35,20 L40,25 L35,30 M40,25 C42,27 45,27 47,25 C49,23 49,20 47,18 C45,16 42,16 40,18"
+                    fill="none"
+                    stroke="#ec4899"
+                    strokeWidth="1.5"
+                  />
+                </svg>
               </div>
-              <span className="text-sm font-medium">AI Matching</span>
             </div>
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
-                <Star className="h-7 w-7" />
+
+            {/* CTA Button */}
+            <div className="text-center pt-6">
+              <button
+                onClick={() => {
+                  document.getElementById('upload-section')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                  });
+                }}
+                className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full
+                         bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600
+                         text-white text-xl font-semibold
+                         shadow-2xl shadow-pink-500/50
+                         hover:shadow-pink-500/70 hover:scale-105
+                         transition-all duration-300
+                         animate-gentle-pulse"
+              >
+                <Heart className="w-6 h-6 animate-heartbeat" fill="currentColor" />
+                <span>Find Your Match</span>
+                <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+              </button>
+            </div>
+
+            {/* Bottom Icons */}
+            <div className="flex items-center justify-center gap-16 pt-12">
+              <div className="flex flex-col items-center gap-3 text-white/95 hover:scale-110 transition-transform cursor-pointer">
+                <div className="w-16 h-16 rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center border-2 border-white/40 shadow-xl">
+                  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                  </svg>
+                </div>
+                <span className="text-sm font-medium drop-shadow-lg">Upload Photo</span>
               </div>
-              <span className="text-sm font-medium">Find Destiny</span>
+
+              <div className="flex flex-col items-center gap-3 text-white/95 hover:scale-110 transition-transform cursor-pointer">
+                <div className="w-16 h-16 rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center border-2 border-white/40 shadow-xl">
+                  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                </div>
+                <span className="text-sm font-medium drop-shadow-lg">AI Matching</span>
+              </div>
+
+              <div className="flex flex-col items-center gap-3 text-white/95 hover:scale-110 transition-transform cursor-pointer">
+                <div className="w-16 h-16 rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center border-2 border-white/40 shadow-xl">
+                  <Star className="w-8 h-8" fill="currentColor" />
+                </div>
+                <span className="text-sm font-medium drop-shadow-lg">Find Destiny</span>
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Scroll Indicator */}
-          <div className="mt-12 animate-bounce">
-            <p className="text-sm text-foreground/60 mb-2">Start your journey below</p>
-            <div className="w-6 h-10 rounded-full border-2 border-foreground/30 mx-auto flex items-start justify-center p-1">
-              <div className="w-1 h-3 bg-foreground/50 rounded-full"></div>
-            </div>
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+          <div className="flex flex-col items-center gap-2 text-white/80">
+            <span className="text-sm font-medium drop-shadow-lg">Discover More</span>
+            <svg className="w-6 h-10" viewBox="0 0 24 40">
+              <rect x="8" y="5" width="8" height="30" rx="4" fill="none" stroke="currentColor" strokeWidth="2"/>
+              <circle cx="12" cy="12" r="2" fill="currentColor">
+                <animate attributeName="cy" values="12;25;12" dur="2s" repeatCount="indefinite" />
+              </circle>
+            </svg>
           </div>
         </div>
       </div>
 
       {/* Upload Form Section */}
-      <div className="gradient-warm py-16">
+      <div id="upload-section" className="gradient-warm py-20">
         <div className="container mx-auto max-w-5xl px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-semibold text-foreground mb-4">
-              Discover Your Compatibility
+              Start Your Journey
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Upload your couple photo and birth dates to receive a comprehensive AI-powered compatibility analysis
