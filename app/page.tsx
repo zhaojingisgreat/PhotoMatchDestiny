@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PhotoUpload } from '@/components/photo-upload';
 import { BirthInfoForm, type BirthInfoFormData } from '@/components/birth-info-form';
-import { Heart, Sparkles, Brain, Users, Shield, FileText, Zap, Star, Lock, Eye, CheckCircle2 } from 'lucide-react';
+import { Heart, Sparkles, Brain, Users, Shield, FileText, Zap, Star, Lock, Eye, CheckCircle2, Image as ImageIconLucide } from 'lucide-react';
 import Image from 'next/image';
 
 export default function HomePage() {
@@ -70,64 +70,125 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen gradient-warm">
-      {/* Hero Section */}
-      <div className="container mx-auto max-w-5xl px-4 py-12 sm:py-16">
-        <div className="mb-12 sm:mb-16 text-center">
-          <div className="mb-6 flex items-center justify-center gap-3">
-            <Heart className="h-10 w-10 sm:h-12 sm:w-12 text-primary animate-pulse" fill="currentColor" />
-            <h1 className="text-4xl sm:text-5xl font-semibold text-foreground tracking-tight">
-              PhotoMatch<span className="text-primary">Destiny</span>
-            </h1>
-            <Sparkles className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
-          </div>
-          <p className="text-lg sm:text-xl text-foreground/70 px-4 font-normal leading-relaxed max-w-2xl mx-auto">
-            AI-powered couple compatibility analysis combining computer vision and Chinese astrology
-          </p>
-          <p className="mt-4 text-base text-muted-foreground px-4">
-            Upload your couple photo and birth dates to get a comprehensive compatibility report
-          </p>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section with Background Image */}
+      <div className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-background.png"
+            alt="Couple at sunset"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Gradient Overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-white/95"></div>
         </div>
 
-        {/* Analysis Form */}
-        <form onSubmit={handleSubmit} className="space-y-8 mb-20">
-          <div className="card-airbnb p-8 sm:p-10">
-            <PhotoUpload
-              onPhotoChange={setPhoto}
-              error={!photo && error ? 'Please upload a photo' : ''}
-            />
-          </div>
-
-          <div className="card-airbnb p-8 sm:p-10">
-            <BirthInfoForm onDataChange={setBirthInfo} />
-          </div>
-
-          {error && (
-            <div className="rounded-2xl bg-red-50 border border-red-100 p-6 text-center text-red-600 font-medium">
-              {error}
+        {/* Hero Content */}
+        <div className="relative z-10 container mx-auto max-w-5xl px-4 py-16 text-center">
+          <div className="mb-8 space-y-4">
+            <p className="text-sm sm:text-base text-pink-600 font-medium tracking-wide animate-pulse">
+              ❤️ WHERE PHOTOS MEET DESTINY ❤️
+            </p>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-foreground tracking-tight">
+                Photo<span className="text-primary">Match</span>Destiny
+              </h1>
             </div>
-          )}
-
-          <div className="flex justify-center pt-4">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn-airbnb-primary min-w-[240px] h-[56px] shadow-lg hover:shadow-xl disabled:shadow-none"
-            >
-              {isSubmitting ? (
-                <div className="flex items-center gap-3">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                  <span>Analyzing...</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <Sparkles className="h-5 w-5" />
-                  <span>Start Analysis</span>
-                </div>
-              )}
-            </button>
+            <p className="text-xl sm:text-2xl text-foreground/80 font-medium max-w-2xl mx-auto">
+              One photo. A million possibilities.
+            </p>
+            <p className="text-lg sm:text-xl text-primary font-medium">
+              Find your destiny.
+            </p>
           </div>
-        </form>
+
+          {/* CTA Icons */}
+          <div className="flex items-center justify-center gap-12 mt-12 mb-8 text-white/90">
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                <ImageIconLucide className="h-7 w-7" />
+              </div>
+              <span className="text-sm font-medium">Upload Photo</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                <Sparkles className="h-7 w-7" />
+              </div>
+              <span className="text-sm font-medium">AI Matching</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                <Star className="h-7 w-7" />
+              </div>
+              <span className="text-sm font-medium">Find Destiny</span>
+            </div>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="mt-12 animate-bounce">
+            <p className="text-sm text-foreground/60 mb-2">Start your journey below</p>
+            <div className="w-6 h-10 rounded-full border-2 border-foreground/30 mx-auto flex items-start justify-center p-1">
+              <div className="w-1 h-3 bg-foreground/50 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Upload Form Section */}
+      <div className="gradient-warm py-16">
+        <div className="container mx-auto max-w-5xl px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-foreground mb-4">
+              Discover Your Compatibility
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Upload your couple photo and birth dates to receive a comprehensive AI-powered compatibility analysis
+            </p>
+          </div>
+
+          {/* Analysis Form */}
+          <form onSubmit={handleSubmit} className="space-y-8 mb-12">
+            <div className="card-airbnb p-8 sm:p-10">
+              <PhotoUpload
+                onPhotoChange={setPhoto}
+                error={!photo && error ? 'Please upload a photo' : ''}
+              />
+            </div>
+
+            <div className="card-airbnb p-8 sm:p-10">
+              <BirthInfoForm onDataChange={setBirthInfo} />
+            </div>
+
+            {error && (
+              <div className="rounded-2xl bg-red-50 border border-red-100 p-6 text-center text-red-600 font-medium">
+                {error}
+              </div>
+            )}
+
+            <div className="flex justify-center pt-4">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn-airbnb-primary min-w-[240px] h-[56px] shadow-lg hover:shadow-xl disabled:shadow-none"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center gap-3">
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                    <span>Analyzing...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <Sparkles className="h-5 w-5" />
+                    <span>Start Analysis</span>
+                  </div>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
 
       {/* Example Analysis Section */}
