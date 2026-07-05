@@ -146,7 +146,7 @@ export default function ResultPage() {
             transition={{ duration: 0.5 }}
             className="mb-12"
           >
-            <OverallScore result={result} />
+            <OverallScore score={result.overallScore} rating={result.rating} />
           </motion.div>
 
           {/* Analysis Sections - Clean Card Grid */}
@@ -157,7 +157,7 @@ export default function ResultPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <AIAnalysisCard result={result.aiAnalysis} />
+              <AIAnalysisCard analysis={result.aiAnalysis} />
             </motion.div>
 
             {/* BaZi Analysis Card */}
@@ -166,7 +166,7 @@ export default function ResultPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <BaziAnalysisCard result={result.baziAnalysis} />
+              <BaziAnalysisCard analysis={result.baziAnalysis} />
             </motion.div>
 
             {/* Recommendations Section - Clean & Actionable */}
