@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { OverallResult } from '@/types/analysis';
 import { OverallScore } from '@/components/result-cards/overall-score';
@@ -16,6 +16,7 @@ import { GoogleAnalytics, Analytics } from '@/components/analytics';
 
 export default function ResultPage() {
   const searchParams = useSearchParams();
+  const params = useParams();
   const [result, setResult] = useState<OverallResult | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -26,6 +27,12 @@ export default function ResultPage() {
       try {
         const decoded = decodeURIComponent(dataParam);
         const parsed = JSON.parse(decoded);
+
+        // 确保 sessionId 存在（从路径参数回退）
+        if (!parsed.sessionId && params.sessionId) {
+          parsed.sessionId = params.sessionId;
+        }
+
         setResult(parsed);
 
         // 追踪分析完成事件
@@ -35,7 +42,7 @@ export default function ResultPage() {
         Analytics.trackError('Failed to parse result data');
       }
     }
-  }, [searchParams]);
+  }, [searchParams, params.sessionId]);
 
   const handleDownloadPDF = async () => {
     if (!result) return;
@@ -103,7 +110,11 @@ export default function ResultPage() {
               </Link>
 
               <div className="flex items-center gap-3">
-                <ShareButton score={result.overallScore} rating={result.rating} />
+                <ShareButton
+                  score={result.overallScore}
+                  rating={result.rating}
+                  sessionId={result.sessionId}
+                />
                 <button
                   onClick={handleDownloadPDF}
                   disabled={isDownloading}
