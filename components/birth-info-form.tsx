@@ -33,10 +33,11 @@ export function BirthInfoForm({ onDataChange }: BirthInfoFormProps) {
   // 监听表单变化
   const watchedData = watch();
 
-  // 当数据变化时通知父组件
+  // 当数据变化时通知父组件（使用 useCallback 包装防止无限循环）
   React.useEffect(() => {
     onDataChange(watchedData);
-  }, [watchedData, onDataChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedData.person1Name, watchedData.person1BirthDate, watchedData.person2Name, watchedData.person2BirthDate]);
 
   return (
     <div className="space-y-6">

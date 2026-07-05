@@ -1,6 +1,6 @@
 /**
  * AI 照片分析模块
- * 支持万界方舟 API（Anthropic 格式）
+ * 支持 DeepSeek API（Anthropic 兼容格式）
  */
 
 import { AIAnalysisResult } from '@/types/analysis';
@@ -21,19 +21,19 @@ export async function analyzePhoto(
     const base64Image = imageBuffer.toString('base64');
     const dataUrl = `data:${mimeType};base64,${base64Image}`;
 
-    // 万界方舟 API 配置（使用 Anthropic 格式）
-    const apiKey = process.env.WANJIE_API_KEY || '';
-    const baseURL = 'https://maas-openapi.wanjiedata.com/api/anthropic';
-    const model = process.env.WANJIE_MODEL || 'claude-sonnet-4-6';
+    // DeepSeek API 配置（Anthropic 兼容端点）
+    const apiKey = process.env.DEEPSEEK_API_KEY || '';
+    const baseURL = 'https://api.deepseek.com/anthropic';
+    const model = process.env.DEEPSEEK_MODEL || 'deepseek-chat';
 
     console.log('🔧 API 配置:', {
       baseURL,
       model,
       hasApiKey: !!apiKey,
-      apiKeyPrefix: apiKey.substring(0, 20) + '...',
+      apiKeyPrefix: apiKey.substring(0, 10) + '...',
     });
 
-    // 使用 Claude 原生格式（Anthropic API）
+    // 使用 Claude 原生格式（DeepSeek Anthropic 兼容）
     const requestBody = {
       model: model,
       max_tokens: 4000,
@@ -59,7 +59,7 @@ export async function analyzePhoto(
     };
 
     console.log('📤 发送请求到:', `${baseURL}/v1/messages`);
-    console.log('📦 请求格式: Anthropic Claude 原生格式');
+    console.log('📦 请求格式: Anthropic Claude 原生格式 (DeepSeek compatible)');
     console.log('📝 请求体预览:', {
       model,
       max_tokens: 4000,
