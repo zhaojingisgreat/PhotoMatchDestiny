@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PhotoUpload } from '@/components/photo-upload';
 import { BirthInfoForm, type BirthInfoFormData } from '@/components/birth-info-form';
-import { Heart, Sparkles, Brain, Users, Shield, FileText, Zap, Star, Lock, Eye } from 'lucide-react';
+import { Heart, Sparkles, Brain, Users, Shield, FileText, Zap, Star, Lock, Eye, CheckCircle2 } from 'lucide-react';
+import Image from 'next/image';
 
 export default function HomePage() {
   const router = useRouter();
@@ -127,6 +128,114 @@ export default function HomePage() {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Example Analysis Section */}
+      <div className="bg-gradient-to-br from-primary/5 via-white/80 to-primary/10 py-20">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-foreground mb-4">
+              See It In Action
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Here's an example of our AI-powered compatibility analysis
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Example Photo */}
+            <div className="card-airbnb overflow-hidden">
+              <div className="relative aspect-[4/3] w-full">
+                <Image
+                  src="/example-couple.png"
+                  alt="Example couple photo"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>
+
+            {/* Analysis Results Preview */}
+            <div className="space-y-6">
+              <div className="card-airbnb p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle2 className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-lg font-semibold text-foreground">Overall Compatibility</h4>
+                      <span className="text-2xl font-bold text-primary">87%</span>
+                    </div>
+                    <div className="w-full bg-muted/30 rounded-full h-3 mb-3">
+                      <div className="bg-gradient-to-r from-primary to-primary/70 h-3 rounded-full" style={{width: '87%'}}></div>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Exceptional compatibility across appearance, personality, and astrological dimensions
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="card-airbnb p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Eye className="h-5 w-5 text-primary" />
+                    <h5 className="font-semibold text-foreground">Appearance</h5>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-primary">92</span>
+                    <span className="text-sm text-muted-foreground">/100</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">Visual harmony & attractiveness</p>
+                </div>
+
+                <div className="card-airbnb p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="h-5 w-5 text-primary" />
+                    <h5 className="font-semibold text-foreground">Personality</h5>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-primary">85</span>
+                    <span className="text-sm text-muted-foreground">/100</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">Complementary traits</p>
+                </div>
+
+                <div className="card-airbnb p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Heart className="h-5 w-5 text-primary" fill="currentColor" />
+                    <h5 className="font-semibold text-foreground">Intimacy</h5>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-primary">90</span>
+                    <span className="text-sm text-muted-foreground">/100</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">Connection & chemistry</p>
+                </div>
+
+                <div className="card-airbnb p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Star className="h-5 w-5 text-primary" />
+                    <h5 className="font-semibold text-foreground">BaZi Match</h5>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-primary">82</span>
+                    <span className="text-sm text-muted-foreground">/100</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">Astrological harmony</p>
+                </div>
+              </div>
+
+              <div className="card-airbnb p-5 bg-primary/5 border-primary/20">
+                <p className="text-sm text-foreground/80 italic">
+                  "Natural smiles, genuine eye contact, and complementary energy - this couple shows strong compatibility across both modern AI analysis and traditional wisdom."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* How It Works Section */}
