@@ -4,7 +4,7 @@ AI 照片分析 + 生辰八字命理，为你解读情侣匹配度
 
 ## 功能特点
 
-- 📸 **AI 照片分析**：使用 Claude Vision API 深度分析情侣合影
+- 📸 **AI 照片分析**：支持多种视觉大模型
   - 颜值评分
   - 性格推测
   - 亲密度评估
@@ -26,9 +26,10 @@ AI 照片分析 + 生辰八字命理，为你解读情侣匹配度
 - React 19
 - TypeScript
 - Tailwind CSS + shadcn/ui
-- Claude 3.5 Sonnet Vision API
+- 万界方舟 MaaS API（支持 Claude 3.5 Sonnet、GPT-4o、Qwen-VL 等）
 - lunar-javascript (八字计算)
 - Framer Motion (动画)
+- @react-pdf/renderer (PDF 生成)
 
 ## 快速开始
 
@@ -40,14 +41,22 @@ npm install
 
 ### 2. 配置环境变量
 
-编辑 `.env.local` 文件并填入你的 Claude API Key：
+编辑 `.env.local` 文件并填入你的万界方舟 API Key：
 
 ```bash
-ANTHROPIC_API_KEY=your-claude-api-key-here
+# 万界方舟 API Key
+WANJIE_API_KEY=wj-xxxxxxxxxxxxxxxx
+
+# 模型名称（可选，默认 claude-3.5-sonnet）
+WANJIE_MODEL=claude-3.5-sonnet
+
+# App URL
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-获取 API Key：[https://console.anthropic.com/](https://console.anthropic.com/)
+**获取 API Key**：[万界方舟官网](https://fangzhou.wanjiedata.com/)
+
+**详细配置教程**：请查看 [WANJIE_SETUP.md](./WANJIE_SETUP.md)
 
 ### 3. 启动开发服务器
 

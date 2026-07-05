@@ -1,16 +1,10 @@
 /**
  * AI 照片分析模块
- * 使用 Claude Vision API 分析情侣照片
+ * 支持万界方舟 API（兼容 OpenAI 格式）
  */
 
-import Anthropic from '@anthropic-ai/sdk';
 import { AIAnalysisResult } from '@/types/analysis';
 import { PHOTO_ANALYSIS_PROMPT } from './prompts';
-
-// 初始化 Anthropic 客户端
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || '',
-});
 
 /**
  * 分析情侣照片
@@ -25,34 +19,57 @@ export async function analyzePhoto(
   try {
     // 将图片转为 base64
     const base64Image = imageBuffer.toString('base64');
+    const dataUrl = `data:${mimeType};base64,${base64Image}`;
 
-    // 调用 Claude Vision API
-    const message = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 4000,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: {
-                type: 'base64',
-                media_type: mimeType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
-                data: base64Image,
+    // 万界方舟 API 配置
+    const apiKey = process.env.WANJIE_API_KEY || '';
+    const baseURL = 'https://maas-openapi.wanjiedata.com/api/v1';
+    const model = process.env.WANJIE_MODEL || 'claude-3.5-sonnet'; // 可配置模型
+
+    // 调用万界方舟 API（OpenAI 兼容格式）
+    const response = await fetch(`${baseURL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: model,
+        max_tokens: 4000,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'image_url',
+                image_url: {
+                  url: dataUrl,
+                },
               },
-            },
-            {
-              type: 'text',
-              text: PHOTO_ANALYSIS_PROMPT,
-            },
-          ],
-        },
-      ],
+              {
+                type: 'text',
+                text: PHOTO_ANALYSIS_PROMPT,
+              },
+            ],
+          },
+        ],
+      }),
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API 错误:', response.status, errorText);
+      throw new Error(`API 调用失败: ${response.status}`);
+    }
+
+    const data = await response.json();
+
     // 提取响应文本
-    const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
+    const responseText = data.choices?.[0]?.message?.content || '';
+
+    if (!responseText) {
+      throw new Error('API 返回空响应');
+    }
 
     // 解析 JSON 响应
     const result = parseAIResponse(responseText);
@@ -60,7 +77,7 @@ export async function analyzePhoto(
     return result;
   } catch (error) {
     console.error('AI 照片分析失败:', error);
-    throw new Error('AI 照片分析失败，请稍后重试');
+    throw new Error(error instanceof Error ? error.message : 'AI 照片分析失败，请稍后重试');
   }
 }
 

@@ -32,6 +32,13 @@ const DIZHI_WUXING: Record<DiZhi, WuXing> = {
   '申': '金', '酉': '金', '戌': '土', '亥': '水',
 };
 
+// 地支对应生肖
+const DIZHI_SHENGXIAO: Record<DiZhi, ShengXiao> = {
+  '子': '鼠', '丑': '牛', '寅': '虎', '卯': '兔',
+  '辰': '龙', '巳': '蛇', '午': '马', '未': '羊',
+  '申': '猴', '酉': '鸡', '戌': '狗', '亥': '猪',
+};
+
 // 生肖相合相冲表（简化版）
 const SHENGXIAO_COMPATIBILITY: Record<ShengXiao, { best: ShengXiao[]; worst: ShengXiao[] }> = {
   '鼠': { best: ['龙', '猴', '牛'], worst: ['马', '羊'] },
@@ -66,8 +73,8 @@ export function calculateBazi(birthDate: Date, name?: string): BaziInfo {
     hour: { gan: baZi.getTimeGan() as TianGan, zhi: baZi.getTimeZhi() as DiZhi },
   };
 
-  // 生肖
-  const shengXiao = baZi.getYearShengXiao() as ShengXiao;
+  // 生肖（从年支推算）
+  const shengXiao = DIZHI_SHENGXIAO[siZhu.year.zhi];
 
   // 计算五行统计
   const wuXing = calculateWuXingStats(siZhu);
