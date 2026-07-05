@@ -49,36 +49,45 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  /* Airbnb 色彩系统 */
+  --background: oklch(1 0 0); /* 白色画布 */
+  --foreground: oklch(0.145 0 0); /* #222222 墨黑色 */
+  --card: oklch(1 0 0); /* 白色卡片 */
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+
+  /* Airbnb Rausch 珊瑚红作为主色 #ff385c */
+  --primary: oklch(0.627 0.211 16.5); /* #ff385c */
+  --primary-foreground: oklch(1 0 0); /* 白色 */
+
+  --secondary: oklch(0.97 0 0); /* 浅灰背景 */
+  --secondary-foreground: oklch(0.145 0 0);
+  --muted: oklch(0.97 0 0); /* #f7f7f7 */
+  --muted-foreground: oklch(0.438 0 0); /* #6a6a6a 灰色文字 */
+  --accent: oklch(0.972 0 0); /* #f7f7f7 */
+  --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --border: oklch(0.871 0 0); /* #dddddd 细线 */
+  --input: oklch(0.871 0 0);
+  --ring: oklch(0.627 0.211 16.5); /* 与主色一致 */
+
+  /* 图表色彩 - 温暖色调 */
+  --chart-1: oklch(0.87 0.15 30);
+  --chart-2: oklch(0.75 0.15 350);
+  --chart-3: oklch(0.65 0.15 15);
+  --chart-4: oklch(0.58 0.12 320);
+  --chart-5: oklch(0.48 0.1 340);
+
+  /* Airbnb 圆角系统 */
+  --radius: 14px; /* md: 14px - Airbnb 标准卡片圆角 */
+
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.627 0.211 16.5);
+  --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-accent-foreground: oklch(0.145 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
@@ -126,5 +135,43 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Airbnb 设计系统自定义样式 */
+@layer components {
+  /* Airbnb 风格按钮 */
+  .btn-airbnb-primary {
+    @apply bg-primary text-primary-foreground rounded-lg px-6 py-3.5 font-medium text-base
+           hover:bg-[#e00b41] transition-colors duration-200
+           disabled:bg-[#ffd1da] disabled:cursor-not-allowed;
+  }
+
+  .btn-airbnb-pill {
+    @apply bg-primary text-white rounded-full px-5 py-2.5 text-sm font-medium
+           hover:bg-[#e00b41] transition-colors duration-200;
+  }
+
+  /* Airbnb 风格卡片 */
+  .card-airbnb {
+    @apply bg-card border-none rounded-2xl shadow-sm overflow-hidden
+           hover:shadow-md transition-shadow duration-300;
+  }
+
+  /* Airbnb 风格输入框 */
+  .input-airbnb {
+    @apply bg-background border border-border rounded-lg px-6 py-3
+           text-base focus:outline-none focus:ring-2 focus:ring-primary/20
+           placeholder:text-muted-foreground;
+  }
+
+  /* 温暖渐变背景 */
+  .gradient-warm {
+    background: linear-gradient(135deg, #fff 0%, #fff5f7 100%);
+  }
+
+  /* 评分展示 */
+  .rating-display {
+    @apply text-6xl font-bold text-foreground leading-tight;
   }
 }

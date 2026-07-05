@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from 'react';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
-import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 
 interface PhotoUploadProps {
@@ -15,26 +14,26 @@ export function PhotoUpload({ onPhotoChange, error }: PhotoUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFile = useCallback((file: File) => {
-    // 验证文件类型
+    // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('请上传图片文件');
+      alert('Please upload an image file');
       return;
     }
 
-    // 验证文件大小（最大 10MB）
+    // Validate file size (max 10MB)
     if (file.size > 10 * 1024 * 1024) {
-      alert('图片文件不能超过 10MB');
+      alert('Image file cannot exceed 10MB');
       return;
     }
 
-    // 创建预览
+    // Create preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
 
-    // 通知父组件
+    // Notify parent component
     onPhotoChange(file);
   }, [onPhotoChange]);
 
@@ -70,55 +69,65 @@ export function PhotoUpload({ onPhotoChange, error }: PhotoUploadProps) {
   }, [onPhotoChange]);
 
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
-        上传情侣合影 <span className="text-red-500">*</span>
-      </label>
+    <div className="space-y-4">
+      <div>
+        <label className="block text-lg font-medium text-foreground mb-2">
+          Upload Couple Photo <span className="text-primary">*</span>
+        </label>
+        <p className="text-sm text-muted-foreground">
+          Please upload a clear couple photo for more accurate analysis
+        </p>
+      </div>
 
-      <Card
-        className={`relative overflow-hidden transition-all ${
-          isDragging ? 'border-pink-500 bg-pink-50' : 'border-gray-300'
+      <div
+        className={`relative overflow-hidden rounded-2xl transition-all border-2 ${
+          isDragging ? 'border-primary bg-primary/5 scale-[1.01]' : 'border-border'
         } ${error ? 'border-red-500' : ''}`}
       >
         {preview ? (
-          // 预览区域
-          <div className="relative aspect-video w-full">
+          // Preview area - Airbnb style
+          <div className="relative aspect-video w-full bg-muted/30">
             <Image
               src={preview}
-              alt="预览"
+              alt="Preview"
               fill
               className="object-contain"
             />
             <button
               type="button"
               onClick={handleRemove}
-              className="absolute right-2 top-2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+              className="absolute right-4 top-4 rounded-full bg-white/90 p-3 text-foreground shadow-lg
+                         hover:bg-white hover:scale-110 transition-all duration-200"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </button>
           </div>
         ) : (
-          // 上传区域
+          // Upload area - Airbnb style
           <div
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            className="flex min-h-[240px] cursor-pointer flex-col items-center justify-center gap-4 p-8 text-center"
+            className="flex min-h-[280px] cursor-pointer flex-col items-center justify-center gap-6 p-12 text-center
+                       hover:bg-muted/20 transition-colors duration-200"
           >
-            <div className="rounded-full bg-pink-100 p-4">
+            <div className="rounded-full bg-primary/10 p-6 transition-transform duration-200 hover:scale-110">
               {isDragging ? (
-                <Upload className="h-8 w-8 text-pink-600" />
+                <Upload className="h-10 w-10 text-primary animate-bounce" />
               ) : (
-                <ImageIcon className="h-8 w-8 text-pink-600" />
+                <ImageIcon className="h-10 w-10 text-primary" />
               )}
             </div>
 
             <div>
-              <p className="text-lg font-medium text-gray-700">
-                {isDragging ? '松开上传照片' : '拖拽照片到这里'}
+              <p className="text-xl font-medium text-foreground mb-2">
+                {isDragging ? 'Drop photo here' : 'Drag photo here'}
               </p>
-              <p className="mt-1 text-sm text-gray-500">
-                或点击选择文件（支持 JPG、PNG，最大 10MB）
+              <p className="text-base text-muted-foreground">
+                or click to select file
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Supports JPG, PNG formats, max 10MB
               </p>
             </div>
 
@@ -130,15 +139,11 @@ export function PhotoUpload({ onPhotoChange, error }: PhotoUploadProps) {
             />
           </div>
         )}
-      </Card>
+      </div>
 
       {error && (
-        <p className="text-sm text-red-600">{error}</p>
+        <p className="text-sm text-red-600 font-medium">{error}</p>
       )}
-
-      <p className="text-xs text-gray-500">
-        💡 提示：请上传清晰的双人合影照片，以便获得更准确的分析结果
-      </p>
     </div>
   );
 }

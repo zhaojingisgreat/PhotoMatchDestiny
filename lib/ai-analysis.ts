@@ -1,6 +1,6 @@
 /**
  * AI 照片分析模块
- * 支持万界方舟 API（兼容 OpenAI 格式）
+ * 支持万界方舟 API（Anthropic 格式）
  */
 
 import { AIAnalysisResult } from '@/types/analysis';
@@ -21,51 +21,81 @@ export async function analyzePhoto(
     const base64Image = imageBuffer.toString('base64');
     const dataUrl = `data:${mimeType};base64,${base64Image}`;
 
-    // 万界方舟 API 配置
+    // 万界方舟 API 配置（使用 Anthropic 格式）
     const apiKey = process.env.WANJIE_API_KEY || '';
-    const baseURL = 'https://maas-openapi.wanjiedata.com/api/v1';
-    const model = process.env.WANJIE_MODEL || 'claude-3.5-sonnet'; // 可配置模型
+    const baseURL = 'https://maas-openapi.wanjiedata.com/api/anthropic';
+    const model = process.env.WANJIE_MODEL || 'claude-sonnet-4-6';
 
-    // 调用万界方舟 API（OpenAI 兼容格式）
-    const response = await fetch(`${baseURL}/chat/completions`, {
+    console.log('🔧 API 配置:', {
+      baseURL,
+      model,
+      hasApiKey: !!apiKey,
+      apiKeyPrefix: apiKey.substring(0, 20) + '...',
+    });
+
+    // 使用 Claude 原生格式（Anthropic API）
+    const requestBody = {
+      model: model,
+      max_tokens: 4000,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'image',  // Claude 原生格式
+              source: {
+                type: 'base64',
+                media_type: mimeType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
+                data: base64Image,  // 纯 base64，不带 data URL 前缀
+              },
+            },
+            {
+              type: 'text',
+              text: PHOTO_ANALYSIS_PROMPT,
+            },
+          ],
+        },
+      ],
+    };
+
+    console.log('📤 发送请求到:', `${baseURL}/v1/messages`);
+    console.log('📦 请求格式: Anthropic Claude 原生格式');
+    console.log('📝 请求体预览:', {
+      model,
+      max_tokens: 4000,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: mimeType, data: '...' } },
+          { type: 'text', text: PHOTO_ANALYSIS_PROMPT.substring(0, 100) + '...' }
+        ]
+      }]
+    });
+
+    const response = await fetch(`${baseURL}/v1/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        'x-api-key': apiKey,  // Anthropic 使用 x-api-key，不是 Authorization
+        'anthropic-version': '2023-06-01',
       },
-      body: JSON.stringify({
-        model: model,
-        max_tokens: 4000,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'image_url',
-                image_url: {
-                  url: dataUrl,
-                },
-              },
-              {
-                type: 'text',
-                text: PHOTO_ANALYSIS_PROMPT,
-              },
-            ],
-          },
-        ],
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('API 错误:', response.status, errorText);
-      throw new Error(`API 调用失败: ${response.status}`);
+      console.error('❌ API 错误详情:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+      });
+      throw new Error(`API 调用失败: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
 
-    // 提取响应文本
-    const responseText = data.choices?.[0]?.message?.content || '';
+    // 提取响应文本（Anthropic 格式）
+    const responseText = data.content?.[0]?.text || '';
 
     if (!responseText) {
       throw new Error('API 返回空响应');

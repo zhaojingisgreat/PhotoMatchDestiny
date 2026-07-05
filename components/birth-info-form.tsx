@@ -1,17 +1,17 @@
 'use client';
 
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 const formSchema = z.object({
   person1Name: z.string().optional(),
-  person1BirthDate: z.string().min(1, '请选择出生日期'),
+  person1BirthDate: z.string().min(1, 'Please select birth date'),
   person2Name: z.string().optional(),
-  person2BirthDate: z.string().min(1, '请选择出生日期'),
+  person2BirthDate: z.string().min(1, 'Please select birth date'),
 });
 
 export type BirthInfoFormData = z.infer<typeof formSchema>;
@@ -40,92 +40,94 @@ export function BirthInfoForm({ onDataChange }: BirthInfoFormProps) {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-gray-800">双方生日信息</h3>
+      <div>
+        <h3 className="text-lg font-medium text-foreground mb-2">Birth Date Information</h3>
+        <p className="text-sm text-muted-foreground">
+          Birth dates will be used for BaZi astrology compatibility calculation
+        </p>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* 第一人信息 */}
-        <Card className="p-6">
-          <div className="space-y-4">
-            <div className="mb-4">
-              <h4 className="font-medium text-pink-600">Ta 的信息</h4>
+        {/* Person 1 - Airbnb style */}
+        <div className="rounded-2xl border-2 border-border p-6 sm:p-8 hover:border-primary/30 transition-colors duration-200">
+          <div className="space-y-6">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="h-2 w-2 rounded-full bg-primary"></div>
+              <h4 className="text-base font-semibold text-primary">Person 1</h4>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="person1Name">
-                姓名（可选）
+            <div className="space-y-3">
+              <Label htmlFor="person1Name" className="text-sm font-medium text-foreground">
+                Name <span className="text-muted-foreground">(optional)</span>
               </Label>
               <Input
                 id="person1Name"
-                placeholder="例如：小明"
+                placeholder="e.g., Alex"
                 {...register('person1Name')}
+                className="input-airbnb"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="person1BirthDate">
-                出生日期 <span className="text-red-500">*</span>
+            <div className="space-y-3">
+              <Label htmlFor="person1BirthDate" className="text-sm font-medium text-foreground">
+                Birth Date <span className="text-primary">*</span>
               </Label>
               <Input
                 id="person1BirthDate"
                 type="date"
                 max={new Date().toISOString().split('T')[0]}
                 {...register('person1BirthDate')}
-                className={errors.person1BirthDate ? 'border-red-500' : ''}
+                className={`input-airbnb ${errors.person1BirthDate ? 'border-red-500' : ''}`}
               />
               {errors.person1BirthDate && (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-red-600 font-medium">
                   {errors.person1BirthDate.message}
                 </p>
               )}
             </div>
           </div>
-        </Card>
+        </div>
 
-        {/* 第二人信息 */}
-        <Card className="p-6">
-          <div className="space-y-4">
-            <div className="mb-4">
-              <h4 className="font-medium text-purple-600">Ta 的信息</h4>
+        {/* Person 2 - Airbnb style */}
+        <div className="rounded-2xl border-2 border-border p-6 sm:p-8 hover:border-primary/30 transition-colors duration-200">
+          <div className="space-y-6">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="h-2 w-2 rounded-full bg-primary"></div>
+              <h4 className="text-base font-semibold text-primary">Person 2</h4>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="person2Name">
-                姓名（可选）
+            <div className="space-y-3">
+              <Label htmlFor="person2Name" className="text-sm font-medium text-foreground">
+                Name <span className="text-muted-foreground">(optional)</span>
               </Label>
               <Input
                 id="person2Name"
-                placeholder="例如：小红"
+                placeholder="e.g., Jordan"
                 {...register('person2Name')}
+                className="input-airbnb"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="person2BirthDate">
-                出生日期 <span className="text-red-500">*</span>
+            <div className="space-y-3">
+              <Label htmlFor="person2BirthDate" className="text-sm font-medium text-foreground">
+                Birth Date <span className="text-primary">*</span>
               </Label>
               <Input
                 id="person2BirthDate"
                 type="date"
                 max={new Date().toISOString().split('T')[0]}
                 {...register('person2BirthDate')}
-                className={errors.person2BirthDate ? 'border-red-500' : ''}
+                className={`input-airbnb ${errors.person2BirthDate ? 'border-red-500' : ''}`}
               />
               {errors.person2BirthDate && (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-red-600 font-medium">
                   {errors.person2BirthDate.message}
                 </p>
               )}
             </div>
           </div>
-        </Card>
+        </div>
       </div>
-
-      <p className="text-xs text-gray-500">
-        💡 提示：生日信息将用于计算八字命理匹配度，请如实填写
-      </p>
     </div>
   );
 }
-
-// 添加 React 导入
-import React from 'react';
