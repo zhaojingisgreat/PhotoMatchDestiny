@@ -11,6 +11,8 @@ import { Card } from '@/components/ui/card';
 import { ArrowLeft, Download, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { ShareButton } from '@/components/share-button';
+import { Analytics } from '@/components/analytics';
 
 export default function ResultPage() {
   const searchParams = useSearchParams();
@@ -25,8 +27,12 @@ export default function ResultPage() {
         const decoded = decodeURIComponent(dataParam);
         const parsed = JSON.parse(decoded);
         setResult(parsed);
+
+        // 追踪分析完成事件
+        Analytics.trackAnalysisComplete(parsed.overallScore);
       } catch (error) {
         console.error('解析结果数据失败:', error);
+        Analytics.trackError('Failed to parse result data');
       }
     }
   }, [searchParams]);
@@ -36,6 +42,8 @@ export default function ResultPage() {
 
     setIsDownloading(true);
     try {
+      // 追踪 PDF 下载
+      Analytics.trackPDFDownload();
       const response = await fetch('/api/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -76,24 +84,32 @@ export default function ResultPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
-      <div className="container mx-auto max-w-5xl px-4 py-8">
+      <div className="container mx-auto max-w-5xl px-4 py-4 sm:py-8">
         {/* 顶部操作栏 */}
-        <div className="mb-6 flex items-center justify-between">
-          <Link href="/">
-            <Button variant="outline" className="gap-2">
+        <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-4">
+          <Link href="/" className="order-last sm:order-first">
+            <Button variant="outline" className="gap-2 w-full sm:w-auto">
               <ArrowLeft className="h-4 w-4" />
               返回首页
             </Button>
           </Link>
 
-          <Button
-            onClick={handleDownloadPDF}
-            disabled={isDownloading}
-            className="bg-gradient-to-r from-pink-500 to-purple-600 gap-2"
-          >
-            <Download className="h-4 w-4" />
-            {isDownloading ? '生成中...' : '下载 PDF 报告'}
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <ShareButton
+              score={result.overallScore}
+              rating={result.rating}
+              sessionId={result.sessionId}
+            />
+
+            <Button
+              onClick={handleDownloadPDF}
+              disabled={isDownloading}
+              className="bg-gradient-to-r from-pink-500 to-purple-600 gap-2 w-full sm:w-auto"
+            >
+              <Download className="h-4 w-4" />
+              {isDownloading ? '生成中...' : '下载 PDF 报告'}
+            </Button>
+          </div>
         </div>
 
         {/* 结果卡片 */}

@@ -8,6 +8,7 @@ import sharp from 'sharp';
 import { analyzePhoto } from '@/lib/ai-analysis';
 import { analyzeBazi } from '@/lib/bazi-calculation';
 import { calculateOverallCompatibility } from '@/lib/compatibility';
+import { checkRateLimit, getClientIP, createRateLimitResponse } from '@/lib/rate-limit';
 
 // 配置 API 路由
 export const runtime = 'nodejs';
@@ -15,6 +16,16 @@ export const maxDuration = 60; // 最长 60 秒
 
 export async function POST(request: NextRequest) {
   try {
+    // 检查限流
+    const clientIP = getClientIP(request);
+    const rateLimitResult = checkRateLimit(clientIP, {
+      maxRequests: 10, // 每个时间窗口最多 10 次请求
+      windowMs: 15 * 60 * 1000, // 15 分钟
+    });
+
+    if (rateLimitResult.limited) {
+      return createRateLimitResponse(rateLimitResult);
+    }
     // 解析表单数据
     const formData = await request.formData();
 

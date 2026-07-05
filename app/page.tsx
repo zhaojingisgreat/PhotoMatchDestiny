@@ -71,20 +71,20 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
-      <div className="container mx-auto max-w-4xl px-4 py-12">
+      <div className="container mx-auto max-w-4xl px-4 py-8 sm:py-12">
         {/* 标题区域 */}
-        <div className="mb-12 text-center">
+        <div className="mb-8 sm:mb-12 text-center">
           <div className="mb-4 flex items-center justify-center gap-2">
-            <Heart className="h-10 w-10 text-pink-500" />
-            <h1 className="text-4xl font-bold text-gray-800">
+            <Heart className="h-8 w-8 sm:h-10 sm:w-10 text-pink-500" />
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">
               PhotoMatch<span className="text-pink-500">Destiny</span>
             </h1>
-            <Sparkles className="h-10 w-10 text-purple-500" />
+            <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-purple-500" />
           </div>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600 px-4">
             AI 照片分析 + 生辰八字命理，为你解读情侣匹配度
           </p>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500 px-4">
             上传合影照片，输入双方生日，立即获取专业分析报告
           </p>
         </div>
